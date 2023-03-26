@@ -4,6 +4,7 @@ import sys
 from settings import *
 from map import *
 from player import *
+from ray_caster import *
 
 
 class Game:
@@ -18,6 +19,7 @@ class Game:
     def new_game(self):
         self.map = Map(self)
         self.player = Player(self)
+        self.ray_caster = RayCaster(self)
 
     # check for the event #
     def check_event(self):
@@ -29,6 +31,7 @@ class Game:
     # update as per the event #
     def update(self):
         self.player.update()
+        self.ray_caster.update()
         pg.display.flip()
 
         self.delta_time = self.clock.tick(fps)
@@ -37,8 +40,15 @@ class Game:
     # draw as per the update #
     def draw(self):
         self.screen.fill('black')
-        self.map.draw()
-        self.player.draw()
+
+        if set_3d:
+            if show_raycaster:
+                self.ray_caster.draw3d()
+        else:
+            self.map.draw()
+            self.player.draw()
+            if show_raycaster:
+                self.ray_caster.draw()
 
     # game loop #
     def run(self):

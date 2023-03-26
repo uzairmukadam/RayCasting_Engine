@@ -55,3 +55,7 @@ class Player:
         pg.draw.line(self.game.screen, 'blue',
                      (self.x, self.y),
                      (self.x + draw_distance * math.cos(self.angle), self.y + draw_distance * math.sin(self.angle)), 1)
+
+    @property
+    def pos(self):
+        return self.x, self.y

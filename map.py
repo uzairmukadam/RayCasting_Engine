@@ -19,7 +19,7 @@ class Map:
         self.game = game
         self.game_map = {}
         self.current_zone = 0
-        self.start_block = 75, 75
+        self.start_block = 25, 25
         self.wall = [1]
         self.get_map()
 
