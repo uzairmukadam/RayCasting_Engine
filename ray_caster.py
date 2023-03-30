@@ -8,6 +8,7 @@ class RayCaster:
         self.game = game
         self.ray_length = [-1] * num_rays
         self.ray_angle = [None] * num_rays
+        self.wall = [None] * num_rays
 
     def update(self):
         px, py = self.game.player.pos
@@ -15,6 +16,7 @@ class RayCaster:
 
         self.ray_length = [-1] * num_rays
         self.ray_angle = [None] * num_rays
+        self.wall = [None] * num_rays
 
         ray_angle = self.game.player.angle - (fov / 2) + 0.0001
 
@@ -37,6 +39,7 @@ class RayCaster:
             while ray_length <= max_depth:
                 if self.game.map.game_map[(d_mx, d_my)] in self.game.map.wall:
                     self.ray_length[ray] = ray_length
+                    self.wall[ray] = (d_mx, d_my)
                     break
 
                 x_length = abs(x_depth / cos_a)
@@ -69,16 +72,30 @@ class RayCaster:
             cos_a = math.cos(ray_angle)
             px, py = self.game.player.pos
             pg.draw.line(self.game.screen, 'yellow',
-                         (px, py), (px + ray * cos_a, py + ray * sin_a), 1)
+                         (px * scale_2d, py * scale_2d), (px * scale_2d + ray * scale_2d * cos_a, py * scale_2d + ray * scale_2d * sin_a), 1)
+
+    def draw_sky(self):
+        pg.draw.rect(self.game.screen, 'black',
+                     (0, 0, width, height // 2))
+
+    def draw_floor(self):
+        pg.draw.rect(self.game.screen, 'red',
+                     (0, height // 2, width, height // 2))
 
     def draw3d(self):
+        #self.draw_sky()
+        #self.draw_floor()
         for i in range(num_rays):
             ray_length = self.ray_length[i]
             if ray_length != -1:
-                projection_height = screen_distance / (ray_length + 0.0001)
-                color = [255 * (1 - (ray_length / max_depth)), 255 * (1 - (ray_length / max_depth)),
-                         255 * (1 - (ray_length / max_depth))]
+                length = ray_length * math.cos(self.game.player.angle - self.ray_angle[i])
+                projection_height = (screen_distance / (length + 0.0001))
+
+                if self.game.map.game_map[self.wall[i]] == 1:
+                    color = (0, 0, 255 * (1 - (ray_length / max_depth)))
+                else:
+                    color = (128 * (1 - (ray_length / max_depth)), 128 * (1 - (ray_length / max_depth)),
+                             128 * (1 - (ray_length / max_depth)))
+
                 pg.draw.rect(self.game.screen, color,
-                             (i * scale, ((height // 2) - projection_height // 2) + self.game.player.vert,
-                              scale,
-                              projection_height))
+                             (i * scale, height // 2 - projection_height // 2, scale, projection_height))

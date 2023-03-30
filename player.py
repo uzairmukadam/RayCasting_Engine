@@ -50,11 +50,11 @@ class Player:
 
     def draw(self):
         pg.draw.circle(self.game.screen, 'green',
-                       (self.x, self.y), 5)
+                       (self.x * scale_2d, self.y * scale_2d), 5)
 
         pg.draw.line(self.game.screen, 'blue',
-                     (self.x, self.y),
-                     (self.x + draw_distance * math.cos(self.angle), self.y + draw_distance * math.sin(self.angle)), 1)
+                     (self.x * scale_2d, self.y * scale_2d),
+                     (self.x * scale_2d + draw_distance * scale_2d * math.cos(self.angle), self.y * scale_2d + draw_distance * scale_2d * math.sin(self.angle)), 1)
 
     @property
     def pos(self):
