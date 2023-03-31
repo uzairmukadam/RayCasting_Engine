@@ -72,30 +72,32 @@ class RayCaster:
             cos_a = math.cos(ray_angle)
             px, py = self.game.player.pos
             pg.draw.line(self.game.screen, 'yellow',
-                         (px * scale_2d, py * scale_2d), (px * scale_2d + ray * scale_2d * cos_a, py * scale_2d + ray * scale_2d * sin_a), 1)
+                         (px * scale_2d, py * scale_2d),
+                         (px * scale_2d + ray * scale_2d * cos_a, py * scale_2d + ray * scale_2d * sin_a), 1)
 
     def draw_sky(self):
         pg.draw.rect(self.game.screen, 'black',
                      (0, 0, width, height // 2))
 
     def draw_floor(self):
-        pg.draw.rect(self.game.screen, 'red',
+        pg.draw.rect(self.game.screen, 'black',
                      (0, height // 2, width, height // 2))
 
     def draw3d(self):
-        #self.draw_sky()
-        #self.draw_floor()
+        self.draw_sky()
+        self.draw_floor()
         for i in range(num_rays):
             ray_length = self.ray_length[i]
             if ray_length != -1:
                 length = ray_length * math.cos(self.game.player.angle - self.ray_angle[i])
                 projection_height = (screen_distance / (length + 0.0001))
 
-                if self.game.map.game_map[self.wall[i]] == 1:
-                    color = (0, 0, 255 * (1 - (ray_length / max_depth)))
-                else:
-                    color = (128 * (1 - (ray_length / max_depth)), 128 * (1 - (ray_length / max_depth)),
-                             128 * (1 - (ray_length / max_depth)))
+                temp_color = self.game.map.wall_color[self.game.map.game_map[self.wall[i]]]
+
+                color = []
+
+                for j in range(3):
+                    color.append(temp_color[j] * (1 - (ray_length / max_depth)))
 
                 pg.draw.rect(self.game.screen, color,
                              (i * scale, height // 2 - projection_height // 2, scale, projection_height))

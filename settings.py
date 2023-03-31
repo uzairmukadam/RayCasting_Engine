@@ -22,8 +22,8 @@ block_size = 1
 
 # Player parameters #
 player_speed = block_size / 300
-rotation_speed = math.pi / 1500
-draw_distance = 50
+rotation_speed = math.pi / 2000
+draw_distance = 15
 
 scale_2d = 20
 

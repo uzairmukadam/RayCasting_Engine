@@ -21,12 +21,16 @@ class Player:
     def movement(self):
         sin_a = math.sin(self.angle)
         cos_a = math.cos(self.angle)
+        sin_b = math.sin(self.angle + (math.pi / 2))
+        cos_b = math.cos(self.angle + (math.pi / 2))
 
         dx, dy = 0, 0
 
         speed = player_speed * self.game.delta_time
         sin_speed = speed * sin_a
         cos_speed = speed * cos_a
+        sin_side_speed = speed * sin_b * 0.5
+        cos_side_speed = speed * cos_b * 0.5
 
         keys = pg.key.get_pressed()
 
@@ -36,6 +40,13 @@ class Player:
         if keys[pg.K_s]:
             dx -= cos_speed
             dy -= sin_speed
+
+        if keys[pg.K_a]:
+            dx -= cos_side_speed
+            dy -= sin_side_speed
+        if keys[pg.K_d]:
+            dx += cos_side_speed
+            dy += sin_side_speed
 
         self.check_collision(dx, dy)
 
@@ -54,7 +65,8 @@ class Player:
 
         pg.draw.line(self.game.screen, 'blue',
                      (self.x * scale_2d, self.y * scale_2d),
-                     (self.x * scale_2d + draw_distance * scale_2d * math.cos(self.angle), self.y * scale_2d + draw_distance * scale_2d * math.sin(self.angle)), 1)
+                     (self.x * scale_2d + draw_distance * scale_2d * math.cos(self.angle),
+                      self.y * scale_2d + draw_distance * scale_2d * math.sin(self.angle)), 1)
 
     @property
     def pos(self):
