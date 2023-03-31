@@ -22,6 +22,7 @@ block_size = 1
 
 # Player parameters #
 player_speed = block_size / 300
+vertical_speed = height / 100
 rotation_speed = math.pi / 2000
 draw_distance = 15
 

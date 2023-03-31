@@ -56,6 +56,14 @@ class Player:
         if keys[pg.K_RIGHT]:
             self.angle += rotation_speed * self.game.delta_time
 
+        if keys[pg.K_UP]:
+            if self.vert <= height // 2:
+                self.vert += vertical_speed
+
+        if keys[pg.K_DOWN]:
+            if self.vert >= height // 2 * -1:
+                self.vert -= vertical_speed
+
     def update(self):
         self.movement()
 

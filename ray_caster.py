@@ -75,17 +75,8 @@ class RayCaster:
                          (px * scale_2d, py * scale_2d),
                          (px * scale_2d + ray * scale_2d * cos_a, py * scale_2d + ray * scale_2d * sin_a), 1)
 
-    def draw_sky(self):
-        pg.draw.rect(self.game.screen, 'black',
-                     (0, 0, width, height // 2))
-
-    def draw_floor(self):
-        pg.draw.rect(self.game.screen, 'black',
-                     (0, height // 2, width, height // 2))
-
     def draw3d(self):
-        self.draw_sky()
-        self.draw_floor()
+        vertical_shift = self.game.player.vert
         for i in range(num_rays):
             ray_length = self.ray_length[i]
             if ray_length != -1:
@@ -100,4 +91,4 @@ class RayCaster:
                     color.append(temp_color[j] * (1 - (ray_length / max_depth)))
 
                 pg.draw.rect(self.game.screen, color,
-                             (i * scale, height // 2 - projection_height // 2, scale, projection_height))
+                             (i * scale, (height // 2 - projection_height // 2) + vertical_shift, scale, projection_height))

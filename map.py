@@ -1,4 +1,3 @@
-import pygame as pg
 from settings import *
 
 game_map = [
