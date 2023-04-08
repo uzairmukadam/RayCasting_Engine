@@ -43,7 +43,13 @@ class ObjectRenderer:
 
             self.vert_pixels[i]["texture_offset"] = texture_offset
 
+    def draw_floor(self):
+        color = [110, 110, 110]
+        pg.draw.rect(self.game.screen, color,
+                     (0, (height // 2) + self.game.player.vert, width, (height // 2) - self.game.player.vert))
+
     def draw(self):
+        self.draw_floor()
         for i in range(len(self.vert_pixels)):
             projection_height = self.vert_pixels[i]["proj_height"]
             texture_id = self.vert_pixels[i]["wall_id"]
