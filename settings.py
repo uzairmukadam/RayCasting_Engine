@@ -1,4 +1,5 @@
 import math
+
 import pygame as pg
 
 
@@ -24,7 +25,7 @@ block_size = 1
 player_speed = block_size / 300
 vertical_speed = height / 100
 rotation_speed = math.pi / 2000
-draw_distance = 15
+draw_distance = 35
 
 scale_2d = 20
 
@@ -36,6 +37,9 @@ delta_angle = fov / num_rays
 screen_distance = (width // 2) / (math.tan(fov / 2))
 scale = width // num_rays
 
+# Texture parameters #
+texture_size = 64
+
 # Debug parameter #
 set_3d = 1
-show_raycaster = 1
+show_raycaster = 0

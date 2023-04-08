@@ -55,6 +55,14 @@ class Map:
             5: [141, 145, 141],
             6: [255, 255, 0]
         }
+        self.wall_asset = {
+            1: "assets/textures/wall_0.png",
+            2: "assets/textures/wall_1.png",
+            3: "assets/textures/wall_2.png",
+            4: "assets/textures/wall_3.png",
+            5: "assets/textures/wall_4.png",
+            6: "assets/textures/wall_5.png"
+        }
         self.get_map()
 
     def get_map(self):
