@@ -20,15 +20,16 @@ fps = 0
 
 # Map parameters #
 block_size = 1
+map_dir = "data/map/"
 
 # Player parameters #
 player_speed = block_size / 400
 vertical_speed = height / 100
 rotation_speed = math.pi / 2000
-draw_distance = 35
+draw_distance = 10
 outer_radius = block_size / 4
 
-scale_2d = 20
+scale_2d = 50
 
 # Ray caster parameters #
 fov = math.pi / 3
@@ -43,4 +44,4 @@ texture_size = 64
 
 # Debug parameter #
 set_3d = 1
-show_raycaster = 0
+show_raycaster = 1

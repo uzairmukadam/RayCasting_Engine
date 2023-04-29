@@ -1,7 +1,6 @@
 import sys
 
 from map import *
-from object_renderer import *
 from player import *
 from ray_caster import *
 
@@ -17,8 +16,8 @@ class Game:
     # load all the required class #
     def new_game(self):
         self.map = Map(self)
+        self.map.load_map("map_1")
         self.player = Player(self)
-        self.object_renderer = ObjectRenderer(self)
         self.ray_caster = RayCaster(self)
 
     # check for the event #
@@ -32,7 +31,6 @@ class Game:
     def update(self):
         self.player.update()
         self.ray_caster.update()
-        self.object_renderer.update()
         pg.display.flip()
 
         self.delta_time = self.clock.tick(fps)
@@ -46,7 +44,7 @@ class Game:
             if show_raycaster:
                 self.ray_caster.draw3d()
             else:
-                self.object_renderer.draw()
+                pass
         else:
             self.map.draw()
             self.player.draw()

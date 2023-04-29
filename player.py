@@ -4,9 +4,35 @@ from settings import *
 class Player:
     def __init__(self, game):
         self.game = game
-        self.x, self.y = self.game.map.start_block
+        self.x, self.y = self.game.map.start_block[0], self.game.map.start_block[1]
         self.angle = 0
         self.vert = 0
+
+    def set_max_drawDist(self):
+        cos_a = math.cos(self.angle)
+        sin_a = math.sin(self.angle)
+
+        x_length = self.game.map.map_dimen[0]
+        y_length = self.game.map.map_dimen[1]
+
+        if cos_a > 0:
+            x_length -= self.x
+        else:
+            x_length = self.x
+
+        if sin_a < 0:
+            y_length -= self.y
+        else:
+            y_length = self.y
+
+        pg.draw.line(self.game.screen, 'blue',
+                     (self.x * scale_2d, self.y * scale_2d),
+                     (self.x * scale_2d + x_length * scale_2d,
+                      self.y * scale_2d), 1)
+        pg.draw.line(self.game.screen, 'red',
+                     (self.x * scale_2d, self.y * scale_2d),
+                     (self.x * scale_2d,
+                      self.y * scale_2d + y_length * scale_2d), 1)
 
     def check_collision(self, dx, dy):
         if dx >= 0:
@@ -14,7 +40,7 @@ class Player:
         else:
             outer_radius_x = (-1) * outer_radius
         x = int((self.x + dx + outer_radius_x))
-        if self.game.map.game_map[(x, int(self.y))] not in self.game.map.wall:
+        if self.game.map.map[x, int(self.y)][0] not in list(self.game.map.wall.keys()):
             self.x += dx
 
         if dy >= 0:
@@ -22,7 +48,7 @@ class Player:
         else:
             outer_radius_y = (-1) * outer_radius
         y = int((self.y + dy + outer_radius_y))
-        if self.game.map.game_map[(int(self.x), y)] not in self.game.map.wall:
+        if self.game.map.map[int(self.x), y][0] not in list(self.game.map.wall.keys()):
             self.y += dy
 
     def movement(self):
@@ -78,7 +104,7 @@ class Player:
         pg.draw.circle(self.game.screen, 'green',
                        (self.x * scale_2d, self.y * scale_2d), 5)
 
-        pg.draw.line(self.game.screen, 'blue',
+        pg.draw.line(self.game.screen, 'red',
                      (self.x * scale_2d, self.y * scale_2d),
                      (self.x * scale_2d + draw_distance * scale_2d * math.cos(self.angle),
                       self.y * scale_2d + draw_distance * scale_2d * math.sin(self.angle)), 1)
