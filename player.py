@@ -9,11 +9,20 @@ class Player:
         self.vert = 0
 
     def check_collision(self, dx, dy):
-        x = int((self.x + dx) / block_size)
-        y = int((self.y + dy) / block_size)
-
-        if self.game.map.game_map[(x, y)] not in self.game.map.wall:
+        if dx >= 0:
+            outer_radius_x = outer_radius
+        else:
+            outer_radius_x = (-1) * outer_radius
+        x = int((self.x + dx + outer_radius_x))
+        if self.game.map.game_map[(x, int(self.y))] not in self.game.map.wall:
             self.x += dx
+
+        if dy >= 0:
+            outer_radius_y = outer_radius
+        else:
+            outer_radius_y = (-1) * outer_radius
+        y = int((self.y + dy + outer_radius_y))
+        if self.game.map.game_map[(int(self.x), y)] not in self.game.map.wall:
             self.y += dy
 
     def movement(self):

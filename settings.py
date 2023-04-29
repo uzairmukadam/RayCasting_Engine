@@ -22,10 +22,11 @@ fps = 0
 block_size = 1
 
 # Player parameters #
-player_speed = block_size / 300
+player_speed = block_size / 400
 vertical_speed = height / 100
 rotation_speed = math.pi / 2000
 draw_distance = 35
+outer_radius = block_size / 4
 
 scale_2d = 20
 
