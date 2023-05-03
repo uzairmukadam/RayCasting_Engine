@@ -15,7 +15,7 @@ class RayCaster:
         ray_angle = self.game.player.angle - (fov / 2) + 0.0001
 
         for ray in range(num_rays):
-            data = {"ray_angle": ray_angle, "wall": []}
+            data = {"ray_angle": ray_angle, "ray_length": max_depth, "wall_id": 0, "proj_height": 0}
             sin_a = math.sin(ray_angle)
             cos_a = math.cos(ray_angle)
 
@@ -31,15 +31,12 @@ class RayCaster:
             d_my = my
 
             while ray_length <= max_depth:
-                try:
-                    if self.game.map.map[d_mx, d_my][0] == 1:
-                        length = ray_length * math.cos(self.game.player.angle - ray_angle)
-                        wall = {"ray_length": ray_length, "proj_height": (screen_distance / (length + 0.0001)),
-                                "wall_height": self.game.map.map[d_mx, d_my][1],
-                                "wall_id": self.game.map.map[d_mx, d_my][0]}
-                        data["wall"].append(wall)
-                except:
-                    pass
+                if self.game.map.game_map[(d_mx, d_my)] in self.game.map.wall:
+                    length = ray_length * math.cos(self.game.player.angle - ray_angle)
+                    data["ray_length"] = ray_length
+                    data["proj_height"] = (screen_distance / (length + 0.0001))
+                    data["wall_id"] = self.game.map.game_map[(d_mx, d_my)]
+                    break
 
                 x_length = abs(x_depth / cos_a)
                 y_length = abs(y_depth / sin_a)
@@ -77,41 +74,19 @@ class RayCaster:
     def draw3d(self):
         vertical_shift = self.game.player.vert
         for i in range(num_rays):
-            pixel_column = self.vert_pixels[i]["wall"]
+            ray_length = self.vert_pixels[i]["ray_length"]
+            wall_id = self.vert_pixels[i]["wall_id"]
+            if ray_length != -1:
+                length = ray_length * math.cos(self.game.player.angle - self.vert_pixels[i]["ray_angle"])
+                projection_height = (screen_distance / (length + 0.0001))
 
-            drawn_height = 0
+                temp_color = self.game.map.wall_color[wall_id]
 
-            for block in pixel_column:
-                ray_length = block["ray_length"]
-                if ray_length != -1:
-                    length = ray_length * math.cos(self.game.player.angle - self.vert_pixels[i]["ray_angle"])
+                color = []
 
-                    projection_block_height = (screen_distance / (length + 0.0001))
+                for j in range(3):
+                    color.append(temp_color[j] * (1 - (ray_length / max_depth)))
 
-                    temp_color = self.game.map.wall[block["wall_id"]]
-
-                    wall_height = block["wall_height"]
-
-                    projection_height = projection_block_height * wall_height
-
-                    drawing_height = height - (height // 2 - projection_block_height // 2 - projection_block_height * (
-                            wall_height - 1)) + vertical_shift
-
-                    color = []
-
-                    if drawing_height > drawn_height:
-                        for j in range(3):
-                            color.append(temp_color[j] * (1 - (ray_length / max_depth)))
-
-                        visible_height = drawing_height - drawn_height
-
-                        if visible_height > projection_height:
-                            visible_height = projection_height
-
-                        pg.draw.rect(self.game.screen, color,
-                                     (i * scale,
-                                      height - drawing_height,
-                                      scale,
-                                      visible_height))
-
-                        drawn_height = drawing_height
+                pg.draw.rect(self.game.screen, color,
+                             (i * scale, (height // 2 - projection_height // 2) + vertical_shift, scale,
+                              projection_height))
