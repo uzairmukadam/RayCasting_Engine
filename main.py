@@ -3,6 +3,7 @@ import sys
 from map import *
 from player import *
 from ray_caster import *
+from texture_renderer import *
 
 
 class Game:
@@ -16,9 +17,10 @@ class Game:
     # load all the required class #
     def new_game(self):
         self.map = Map(self)
-        self.map.load_map("map_1")
+        self.map.load_map("map_2")
         self.player = Player(self)
         self.ray_caster = RayCaster(self)
+        self.texture_renderer = TextureRenderer(self)
 
     # check for the event #
     def check_event(self):
@@ -31,6 +33,10 @@ class Game:
     def update(self):
         self.player.update()
         self.ray_caster.update()
+
+        if set_3d and not show_raycaster:
+            self.texture_renderer.update()
+
         pg.display.flip()
 
         self.delta_time = self.clock.tick(fps)
@@ -42,14 +48,12 @@ class Game:
 
         if set_3d:
             if show_raycaster:
-                self.ray_caster.draw3d()
+                self.ray_caster.draw()
             else:
-                pass
+                self.texture_renderer.draw()
         else:
             self.map.draw()
             self.player.draw()
-            if show_raycaster:
-                self.ray_caster.draw()
 
     # game loop #
     def run(self):

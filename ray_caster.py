@@ -32,13 +32,13 @@ class RayCaster:
 
             while ray_length <= max_depth:
                 try:
-                    if self.game.map.map[d_mx, d_my][0] == 1:
+                    if self.game.map.map[d_mx, d_my][0] in list(self.game.map.wall.keys()):
                         length = ray_length * math.cos(self.game.player.angle - ray_angle)
-                        wall = {"ray_length": ray_length, "proj_height": (screen_distance / (length + 0.0001)),
+                        wall = {"ray_length": ray_length, "block_height": (screen_distance / (length + 0.0001)),
                                 "wall_height": self.game.map.map[d_mx, d_my][1],
                                 "wall_id": self.game.map.map[d_mx, d_my][0]}
                         data["wall"].append(wall)
-                except:
+                except KeyError:
                     pass
 
                 x_length = abs(x_depth / cos_a)
@@ -63,18 +63,6 @@ class RayCaster:
             ray_angle += delta_angle
 
     def draw(self):
-        for i in range(num_rays):
-            ray_length = self.vert_pixels[i]["ray_length"]
-            ray_angle = self.vert_pixels[i]["ray_angle"]
-            sin_a = math.sin(ray_angle)
-            cos_a = math.cos(ray_angle)
-            px, py = self.game.player.pos
-            pg.draw.line(self.game.screen, 'yellow',
-                         (px * scale_2d, py * scale_2d),
-                         (px * scale_2d + ray_length * scale_2d * cos_a, py * scale_2d + ray_length * scale_2d * sin_a),
-                         1)
-
-    def draw3d(self):
         vertical_shift = self.game.player.vert
         for i in range(num_rays):
             pixel_column = self.vert_pixels[i]["wall"]
@@ -95,7 +83,7 @@ class RayCaster:
                     projection_height = projection_block_height * wall_height
 
                     drawing_height = height - (height // 2 - projection_block_height // 2 - projection_block_height * (
-                            wall_height - 1)) + vertical_shift
+                            wall_height - 1)) - vertical_shift
 
                     color = []
 
@@ -115,3 +103,7 @@ class RayCaster:
                                       visible_height))
 
                         drawn_height = drawing_height
+
+    @property
+    def columns(self):
+        return self.vert_pixels

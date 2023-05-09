@@ -10,6 +10,7 @@ class Map:
         self.map_dimen = []
         self.map = {}
         self.wall = {}
+        self.wall_texture = {}
         self.start_block = None
 
     def load_map(self, map_id):
@@ -28,11 +29,13 @@ class Map:
 
             for wall in map_data["wall_id"]:
                 self.wall[wall] = map_data["wall_color"][str(wall)]
+                self.wall_texture[wall] = assets_dir + map_data["wall_asset"][str(wall)]
 
             self.start_block = map_data["start_block"]
 
     def draw(self):
         for pos in self.map:
             if self.map[pos][0] in list(self.game.map.wall.keys()):
-                pg.draw.rect(self.game.screen, 'white',
+                color = self.game.map.wall[self.map[pos][0]]
+                pg.draw.rect(self.game.screen, color,
                              (pos[0] * scale_2d, pos[1] * scale_2d, scale_2d, scale_2d))
