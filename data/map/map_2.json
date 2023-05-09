@@ -126,5 +126,5 @@
 					"5" : "wall_4.png",
 					"6" : "wall_5.png",
 					"7" : "wall_6.png"},
-  "start_block" : [3, 33]
+  "start_block" : [12, 31]
 }

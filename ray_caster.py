@@ -9,6 +9,7 @@ class RayCaster:
     def update(self):
         px, py = self.game.player.pos
         mx, my = int(px / block_size), int(py / block_size)
+        print(mx, my)
 
         self.vert_pixels = []
 
@@ -71,38 +72,36 @@ class RayCaster:
 
             for block in pixel_column:
                 ray_length = block["ray_length"]
-                if ray_length != -1:
-                    length = ray_length * math.cos(self.game.player.angle - self.vert_pixels[i]["ray_angle"])
 
-                    projection_block_height = (screen_distance / (length + 0.0001))
+                projection_block_height = block["block_height"]
 
-                    temp_color = self.game.map.wall[block["wall_id"]]
+                temp_color = self.game.map.wall[block["wall_id"]]
 
-                    wall_height = block["wall_height"]
+                wall_height = block["wall_height"]
 
-                    projection_height = projection_block_height * wall_height
+                projection_height = projection_block_height * wall_height
 
-                    drawing_height = height - (height // 2 - projection_block_height // 2 - projection_block_height * (
-                            wall_height - 1)) - vertical_shift
+                drawing_height = height - (height // 2 - projection_block_height // 2 - projection_block_height * (
+                        wall_height - 1)) - vertical_shift
 
-                    color = []
+                color = []
 
-                    if drawing_height > drawn_height:
-                        for j in range(3):
-                            color.append(temp_color[j] * (1 - (ray_length / max_depth)))
+                if drawing_height > drawn_height:
+                    for j in range(3):
+                        color.append(temp_color[j] * (1 - (ray_length / max_depth)))
 
-                        visible_height = drawing_height - drawn_height
+                    visible_height = drawing_height - drawn_height
 
-                        if visible_height > projection_height:
-                            visible_height = projection_height
+                    if visible_height > projection_height:
+                        visible_height = projection_height
 
-                        pg.draw.rect(self.game.screen, color,
-                                     (i * scale,
-                                      height - drawing_height,
-                                      scale,
-                                      visible_height))
+                    pg.draw.rect(self.game.screen, color,
+                                 (i * scale,
+                                  height - drawing_height,
+                                  scale,
+                                  visible_height))
 
-                        drawn_height = drawing_height
+                    drawn_height = drawing_height
 
     @property
     def columns(self):

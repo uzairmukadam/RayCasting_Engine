@@ -45,4 +45,4 @@ texture_size = 64
 
 # Debug parameter #
 set_3d = 1
-show_raycaster = 0
+show_raycaster = 1
