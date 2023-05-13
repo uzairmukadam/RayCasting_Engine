@@ -8,32 +8,6 @@ class Player:
         self.angle = 0
         self.vert = 0
 
-    def set_max_drawDist(self):
-        cos_a = math.cos(self.angle)
-        sin_a = math.sin(self.angle)
-
-        x_length = self.game.map.map_dimen[0]
-        y_length = self.game.map.map_dimen[1]
-
-        if cos_a > 0:
-            x_length -= self.x
-        else:
-            x_length = self.x
-
-        if sin_a < 0:
-            y_length -= self.y
-        else:
-            y_length = self.y
-
-        pg.draw.line(self.game.screen, 'blue',
-                     (self.x * scale_2d, self.y * scale_2d),
-                     (self.x * scale_2d + x_length * scale_2d,
-                      self.y * scale_2d), 1)
-        pg.draw.line(self.game.screen, 'red',
-                     (self.x * scale_2d, self.y * scale_2d),
-                     (self.x * scale_2d,
-                      self.y * scale_2d + y_length * scale_2d), 1)
-
     def check_collision(self, dx, dy):
         if dx >= 0:
             outer_radius_x = outer_radius

@@ -9,7 +9,6 @@ class RayCaster:
     def update(self):
         px, py = self.game.player.pos
         mx, my = int(px / block_size), int(py / block_size)
-        print(mx, my)
 
         self.vert_pixels = []
 
