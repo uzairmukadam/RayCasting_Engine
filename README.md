@@ -8,13 +8,13 @@ In early first person games, raycasting was used to efficiently render a 3D worl
 
 1. [Working](https://github.com/uzairmukadam/RayCasting_Engine/new/master?readme=1#working)
 2. [Digital Differential Analyzer (DDA)](https://github.com/uzairmukadam/RayCasting_Engine/new/master?readme=1#digital-differential-analyzer-dda)
-3. [To-do tasks](https://github.com/uzairmukadam/RayCasting_Engine/new/master?readme=1#to-do-tasks)
-4. [Usage](https://github.com/uzairmukadam/RayCasting_Engine/new/master?readme=1#usage)
+3. [Class files](https://github.com/uzairmukadam/RayCasting_Engine/new/master?readme=1#class-files)
 
 # Working
 
-A 2d grid map is created where each block is either empty space to walk through or a wall that cannot be passed through. A point, i.e. the player will move through this map. The program checks every step of the player and if the player is stepping on a wall block the movements are restricted or stopped. For generating a 3d view, a fixed field of view is set along with a fixed draw distance. Within the defined field of view, a number or rays are drawn from the player position to the maximun draw distance in an angle. If the ray meets a block containing the wall, it is stopped there.
-The traditional way to check for ray collision would be check for the block type at each unit length for the casted ray. However, this method can be very heavy and can result in low frames per second. An efficient way to perform these checks is to use the Digital Differential Analyzer (DDA) algorithm. This algorith checks ray interception only at block intersections. This can reduce the check drastically.
+A 2d grid map is created where each block is either empty space to walk through or a wall that cannot be passed through. A point, i.e. the player will move through this 2d map. The program checks every step of the player and if the player is stepping on a wall block the movements are restricted.
+For generating a 3d view, a fixed field of view is set along with a fixed draw distance to minimize processing. Within the defined field of view, a number or rays are drawn from the player position to the maximun draw distance. If the ray touches a block containing the wall, its distance is recorded. Using this recorded distance, the height of the wall block is determined and drawn.
+The traditional way to check for ray collision would be check for the block type at each unit length for the casted ray. However, this method can be very heavy and can result in very low frames per second. An efficient way to perform these checks is to use the Digital Differential Analyzer (DDA) algorithm. This algorithm checks for ray interception only at block intersections. This can reduce the check drastically. A detailed explanation can be found in the next section.
 If a wall collision is detected by the ray, we construct a rectangle whose height is inversely proportional to the ray length and the width is equivalent to the display width / number of rays. The walls generated presents the user with a psudo 3d environment to explore.
 
 # Digital Differential Analyzer (DDA)
@@ -26,16 +26,11 @@ For a detailed explanation on how the algorithm is utilized please check out the
 
 [![Super Fast Ray Casting in Tiled Worlds using DDA](http://img.youtube.com/vi/NbSee-XM7WA/0.jpg)](https://youtu.be/NbSee-XM7WA)
 
-# To-do Tasks
+# Class files
 
-1. Apply textures to wall.
-2. Floor and roof casting.
-3. Addition of sprite objects.
-4. Optimization.
-
-# Usage
-
-1. Clone the project.
-2. In the map.py file modify the game map list.
-3. From settings.py modify parameters as per you liking.
-4. Run main.py.
+1. main.py - This is the starting point of the project and it is responsible for importing all the other required classes and creating the pygame windows for drawing the graphics.
+2. settings.py - This class is just used to define parameters to be used by the game engine like window resolution, asset location, and render method, etc.
+3. map.py - This imports the map json file and segregates the data in it into different variables.
+4. player.py - This class is responsible for dealing with the movement of the player. It modifies the player position based on the key pressed and restricts movement if collision with wall is detected.
+5. ray_caster.py - This class is used to calculate the ray lenghts for each vertical pixel column. It uses the player position from the player class and draws a number of rays within the field of view set in the settings and checks for wall collision. In the updated variable height block update, the ray_caster does not stop when it detects a wall. It continues till the max draw distance and records all the wall collision detected in the path.
+6. texture_renderer.py - As the name suggests, this class is responsible for drawing the scene with textures. With the data obtained from the ray_caster class it draws the wall column by slicing the texture into thin vertical columns equivalent to the width of the scanned vertical pixel columns.
