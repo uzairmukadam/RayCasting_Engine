@@ -6,9 +6,9 @@ In early first person games, raycasting was used to efficiently render a 3D worl
 
 # Index
 
-1. [Working](https://github.com/uzairmukadam/RayCasting_Engine/new/master?readme=1#working)
-2. [Digital Differential Analyzer (DDA)](https://github.com/uzairmukadam/RayCasting_Engine/new/master?readme=1#digital-differential-analyzer-dda)
-3. [Class files](https://github.com/uzairmukadam/RayCasting_Engine/new/master?readme=1#class-files)
+1. Working
+2. Digital Differential Analyzer (DDA)
+3. Class files
 
 # Working
 
