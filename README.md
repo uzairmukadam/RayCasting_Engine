@@ -6,14 +6,14 @@ In early first person games, raycasting was used to efficiently render a 3D worl
 
 # Controls
 
-W - Move forwards
-S - Move backwards
-A - Move left
-D - Move right
-Up Arrow - Look up
-Down Arrow - Look down
-Left Arrow - Rotate to left
-Right Arrow - Rotate to right
+- W - Move forwards
+- S - Move backwards
+- A - Move left
+- D - Move right
+- Up Arrow - Look up
+- Down Arrow - Look down
+- Left Arrow - Rotate to left
+- Right Arrow - Rotate to right
 
 # Index
 
