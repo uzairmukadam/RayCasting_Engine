@@ -4,6 +4,17 @@
 Ray casting is the methodological basis for 3D CAD/CAM solid modeling and image rendering. It is essentially the same as ray tracing for computer graphics where virtual light rays are "cast" or "traced" on their path from the focal point of a camera through each pixel in the camera sensor to determine what is visible along the ray in the 3D scene.
 In early first person games, raycasting was used to efficiently render a 3D world from a 2D playing field using a simple one-dimensional scan over the horizontal width of the screen. The video game Wolfenstein 3D was built from a square based grid of uniform height walls meeting solid-colored floors and ceilings. In order to draw the world, a single ray was traced for every column of screen pixels and a vertical slice of wall texture was selected and scaled according to where in the world the ray hits a wall and how far it travels before doing so.
 
+# Controls
+
+W - Move forwards
+S - Move backwards
+A - Move left
+D - Move right
+Up Arrow - Look up
+Down Arrow - Look down
+Left Arrow - Rotate to left
+Right Arrow - Rotate to right
+
 # Index
 
 1. Working
